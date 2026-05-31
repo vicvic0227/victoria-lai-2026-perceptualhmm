@@ -58,6 +58,8 @@ State 0 (Prior state) represents observations that cluster around 0, which is th
 
 Results demonstrated a significant improvement of model fit of the input HMM compared with PM, AIC= 1996.22, BIC= 1772.32. While previous static models correctly identified that observers switch between discrete prior-dependent and evidence-dependent states, our work demonstrates that this switching is a dynamic, memory-retaining process driven by temporal inertia and actively updated by shifting covariates, such as motion coherence and large stimulus-angle deviations(@figure-param). Our study extends the switching observer phenomenon by providing a temporal account for individual differences in strategy switching that could account for the accuracy difference between the two, where subject 1 has a mean error rate of 29.38% and subject 10 has 67.17% error in the high difficulty block, respectively(@figure-main), implying these fluctuations discrepancies could reflect attentional allocation and that relying on priors with changing coherence might not be optimal.
 
+One of our limitations is that we assumed that the behavioral variabilities were explained by kprior and kevidence that motor noises and random lapses are not modelled. Future studies could disentangle the psychological meaning behind a “prior state”: whether it involves a strategic exploration or merely disengagement.
+
 ```{figure} figure1.png
 :name: figure-param
 :alt: Figure 1.
@@ -76,5 +78,5 @@ Results demonstrated a significant improvement of model fit of the input HMM com
 
 
 
-Finally, we interpret our results, discussing their implications and relevance to the field. We provide a clear takeaway message for the reader that summarizes the contribution of this micropublication.
+
 
