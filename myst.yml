@@ -8,10 +8,10 @@ project:
   # doi: 10.5281/zenodo.XXXXXXX
   # date: YYYY-MM-DD
   authors:
-  - name: Doe, J.
-    orcid: 0000-0000-0000-0001
+  - name: Yi Ching Victoria Lai
+    orcid: 0000-0003-0775-190X
     affiliations:
-    - Department of Geosciences and Natural Resource Management, University of Copenhagen, Denmark
+    - Department of Social and Behavioural Sciences, City University of Hong Kong
     roles:
     - Conceptualization
     - Formal analysis
@@ -21,46 +21,27 @@ project:
     - Visualization
     - Writing - original draft
     - Writing - review & editing
-  - name: Sharma, A.J.
-    orcid: 0000-0000-0000-0002
+  - name: Haris Organtzidis
+    orcid: 0009-0004-7201-3756
     affiliations:
-    - Department of Earth Sciences, Indian Institute of Technology Bombay, Mumbai, India
+    - Neuroblox Inc
+    - Stony Brook University
     roles:
-    - Formal analysis
+    - Supervision
     - Investigation
-    - Writing - original draft
     - Writing - review & editing
-  - name: Tanaka, S.
-    affiliations:
-    - College of Urban and Environmental Sciences, Peking University, Beijing, China
-    roles:
-    - Formal analysis
-    - Writing - original draft
-    - Writing - review & editing
-  - name: Vera Gutierrez, C.
-    affiliations:
-    - Institute of Geology, Mining, and Metallurgy, Universidad Nacional Mayor de San Marcos, Lima, Peru
-    roles:
-    - Formal analysis
-    - Writing - original draft
-    - Writing - review & editing
-  - name: Ndlovu, T.
-    affiliations:
-    - Marine Research and Development, Oceanic Dynamics Ltd., Cape Town, South Africa
-    roles:
-    - Formal analysis
-    - Writing - review & editing
+
 
   toc:
   - file: index.md
 
   id: isp-micropublication-template
-  title: This is the title of our awesome micropublication
+  title: Time-dependent strategy dynamics in a perceptual decision-making task
   keywords:
-  - keyword1
-  - keyword2
-  - keyword3
-  - keyword4
+  - Perceptual Decision-Making
+  - Hidden Markov Models
+  - Bounded Rationality
+  - Temporal Inertia
   github: https://github.com/impact-scholars/isp-micropublication-template
   bibliography:
   - bib.bib
