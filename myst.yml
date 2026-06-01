@@ -44,7 +44,7 @@ project:
   - Temporal Inertia
   github: https://github.com/impact-scholars/isp-micropublication-template
   bibliography:
-  - bib.bib
+  - impact_scholars.bib
   # downloads:
   # - file: supplementary-material.zip
   #   title: Supplementary Material
