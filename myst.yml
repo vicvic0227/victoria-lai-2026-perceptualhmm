@@ -40,8 +40,8 @@ project:
   keywords:
   - Perceptual Decision-Making
   - Hidden Markov Models
-  - Bounded Rationality
-  - Temporal Inertia
+  - State-space modelling
+  - Non-stationarity
   github: https://github.com/impact-scholars/isp-micropublication-template
   bibliography:
   - impact_scholars.bib
