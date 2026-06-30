@@ -14,7 +14,7 @@ The current project used the Neuromatch Academy dataset for the perceptual dot m
 
  we aim to examine whether switching behaviour is time-dependent and whether factors such as motion coherence can influence individuals' internal states during decision-making. Recent reviews have challenged the assumption that decision strategies are stable across trials and have shown that models that deploy non-stationary dynamics, such as discrete-state switches, provide greater explanatory power for human behaviour than some standard static models {cite:p}`GunawanTimeevolvingPsychologicalProcesses2022;uraiStructureUncoveredUnderstanding2026a`. To determine whether observers continuously integrate expectations and sensory evidence into a single percept while perceptual noise remains constant across trials, or whether they discretely switch between independent cognitive states, whether the switching is dependent on previous states and precision of sensory processing, we compared 3 models: Probabilistic Mixture model (PM), Weighted Mean model (WM) and the Hidden Markov Model.
 
-## 1. Weighted Mean model with a global variance (WM) 
+## Weighted Mean model with a global variance (WM) 
  Unlike a discrete-switching framework, this model assumes that on every trial t, the brain multiplicatively combines its internal structural expectation (the prior) with the incoming sensory evidence to form a unified, blended posterior mean. The relative contribution of sensory evidence versus prior is determined by a trial-by-trial linear predictor $w_{\text{evidence,t}}$ and $w_{\text{prior,t}}$, which passes through a standard logistic function:
   $$w_{\text{evidence,t}} = \frac{1}{1 + \exp\left(-(b_0 + b_{\text{coh}} \cdot \text{coherence} + b_{\alpha} \cdot \alpha)\right)}$$ 
 
@@ -29,7 +29,7 @@ $$\mu_t = \text{atan2} \left( w_{\text{evidence}, t} \cdot \sin(\theta_{\text{ev
 The likelihood was modelled as a single von Mises distribution centred on the circular weighted mean ($\mu_t$) of the prior $\theta_{\text{prior}, t}$ and evidence direction angle $\theta_{\text{evidence}, t}$, with a single shared concentration parameter kappa . The von Mises distribution is a circular equivalent of the Gaussian distribution:
 $$p(y_t \mid \mu_t, \kappa) = \frac{\exp(\kappa \cdot \cos(y_t - \mu_t))}{2\pi \cdot I_0(\kappa)}$$
 
-## 2. Probabilistic Mixture model (PM)
+## Probabilistic Mixture model (PM)
 Given evidence from the original paper that the switching prior sampling model provides a better fit, as some subjects were not certain about the prior mean, it would be better to model observations generated from two different von Mises distributions, with the likelihood of internal perceptual readout represented by two distributions centred on either displayed angle or the prior mean of 0. PM has the same model structure as WM, except that it assumes that the subject responds based on either the prior distribution with concentration prior or the evidence distribution with ev . Here, the weights $w$ act as a coin flip to determine which distribution drives which response during that trial. We set the bounds of bcoh to be highly positive (10, 50), as we assume higher coherence drives the model to weight the physical evidence over the prior.
 
 Evidence Likelihood:  $$p_{\text{evidence}}(y_t) \sim \text{von Mises}(\alpha, \,  \kappa_{\text{ev}})$$
@@ -41,18 +41,18 @@ $$p(y_t) = w_e \cdot p_{\text{evidence}}(y_t) + (1 - w_e) \cdot p_{\text{prior}}
 
 Model comparisons yield $\Delta$ AIC = 21,417.9 and $\Delta$ BIC = 21,306.00 in favour of PM model, indicating that it is a better fit.
 
-## 3. Input-driven Hidden Markov Model
+## Input-driven Hidden Markov Model
 Under PM model, the choice of switching on trial t  has zero historical memory and it is entirely unaffected by what the participant did on trial t-1. A Hidden Markov model enables the capture of internal mental states, such as mind-wandering, by assigning the most probable state to each trial in a session {cite:p}`AshwoodMiceAlternateDiscrete2022`. In our model, the two hidden states correspond to prior and evidence modes, which correspond to distinct decision-making strategies, parametrised by a set of GLM weights that describe how subjects weigh different task covariates to make a decision in each state. 
  
-### 3.1 Latent State Transitions
+### Latent State Transitions
 The transition is modelled using multinomial logistic regression. The discrete hidden states at time t are denoted as  $z_t$, which represents the discrete latent state at trial t, where $z_t$ = 0  corresponds to the Prior state and $z_t$  = 1 represents the Evidence state.
 
 
-Given you are in the previous state $j$ with external input $u_t$, the exogenous input feature vector at trial $t$. In this paradigm, $u_t = [\theta_{\text{stim}}, \text{coherence}]^\top$, incorporating both structural sensory deviation and evidence strength. The probability of jumping from the current state $j$ to the next state $k$ is a softmax over all possible next states. Here, $\log P_{j,k}$ represents the baseline, unnormalized transition bias independent of external task inputs. The vector $w_{j,k}$ represents the transition weights (input coefficients) corresponding to target state $k$ when originating from state $j$. These weights determine how strongly motion coherence and stimulus orientation modulate and shift behavioral strategies.
+Given you are in the previous state $j$ with external input $u_t$, the exogenous input feature vector at trial $t$ is equivalent to $u_t = [\theta_{\text{stim}}, \text{coherence}]^\top$ which includes the current displayed angle and 3 levels of motion coherence. Factors that are invisible to subjects were not counted as inputs, like prior standard deviation. The probability of jumping from the current state $j$ to the next state $k$ is a softmax over all possible next states. Here, $\log P_{j,k}$ represents the baseline, unnormalized transition bias independent of external task inputs. The vector $w_{j,k}$ represents the transition weights (input coefficients) corresponding to target state $k$ when originating from state $j$. These weights determine how strongly motion coherence and stimulus orientation modulate and shift behavioral strategies.
 
 $$ \operatorname{Pr}(z_t = k \mid z_{t-1} = j, u_t) = \frac{\exp\left\{ \log P_{j,k} + w_{j,k}^\top u_t \right\}}{\sum_{k'=1}^K \exp\left\{ \log P_{j,k'} + w_{j,k'}^\top u_t \right\}} $$
 
-### 3.2 Emission Likelihoods
+### Emission Likelihoods
 
 The model maps the continuous probability with observed behaviours during model estimation via the EM algorithm. The overall likelihood of response $y_t$ is evaluated as a mixture density. Specifically, the emission likelihoods are weighted by their posterior probabilities and marginalised across all latent states:
 $$p(y_t \mid u_{1:t}, y_{1:t-1}) = \sum_{k=0}^{1} p(y_t \mid z_t = k) \Pr(z_t = k \mid u_{1:t}, y_{1:t-1})$$
