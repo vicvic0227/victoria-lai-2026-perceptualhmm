@@ -67,22 +67,33 @@ $$p(y_t \mid z_t = 1) = \text{von Mises}(y_t \mid \alpha, \kappa_{\text{ev}}) = 
 
 State 0 (Prior state) captures responses clustered around the prior mean, whereas State 1(Evidence state) captures responses clustered around the displayed stimulus direction.
 
-The input-driven HMM outperformed the PM model, with $\Delta$ NLL= 4121.44, $\Delta$ AIC= 1996.22, $\Delta$ BIC= 1772.32. This result suggests that strategy switching is not only discrete, as captured by the PM model, but also temporally structured(@figure-param). Subject level examples further illustrate this temporal structure. Our study extends the switching observer phenomenon by providing a temporal account for individual differences in strategy switching (@figure-main). Subject 1 appears to be strongly evidence reliant, whereas subject 10 shows abrupt transitions between evidence and prior regimes which motion coherence alone does not fully explain those transitions. This specific pattern was also reflected in subject-wise accuracy rate, where subject 1 has a mean error rate of 29.38% and subject 10 has 67.17% error, respectively, implying these fluctuations discrepancies could reflect attentional allocation and that relying on priors with changing coherence might not be optimal.
+The input-driven HMM outperformed the PM model, with $\Delta$ NLL= 4121.44, $\Delta$ AIC= 1996.22, $\Delta$ BIC= 1772.32. This result suggests that strategy switching is not only discrete, as captured by the PM model, but also temporally structured(@figure-param). Subject level examples further illustrate this temporal structure. Our study extends the switching observer phenomenon by providing a temporal account for individual differences in strategy switching (@figure-main). We compared subjects who showed an improved HMM model fitting scores, with highest and lowest error among the first 4 blocks. Subject 3 appears to be strongly evidence reliant, whereas subject 10 shows abrupt transitions between evidence and prior regimes which motion coherence alone does not fully explain those transitions. Some subjects show flexible input sensitive arbitration between the two states, whereas others show blockwise strategy states.
 
-One of our limitations is that we assumed that the behavioral variabilities were explained by kprior and kevidence that motor noises and random lapses are not modelled. Future studies could disentangle the psychological meaning behind a “prior state”: whether it involves a strategic exploration or merely disengagement.
+One of our limitations is that we assumed that the behavioral variabilities were explained by kprior and kevidence that motor noises and random lapses are not modelled. Future studies could disentangle the psychological meaning behind a 'prior state': whether it involves a strategic exploration or merely disengagement.
 
-```{figure} figure1.png
+```{figure} hmmparameterv2.png
 :name: figure-param
 :alt: Figure 1.
 
-Group-level parameter distributions from the HMM model: compared with coherence, alpha() has less weight on driving state transitions. Baseline transition probabilities P(0->1) indicated that, without strong coherence, subjects tend to stay at the prior state once they start relying on it to make decisions.
+Group-level parameter distributions from the input-driven HMM model across subjects, N=12. P(0->1) and P(1->1) at mean inputs represent the transition probabilities into the evidence state when the input variables are zero. P(0->1) reflects switching from the prior state to the evidence state, whereas P(1->1) reflects persistence in the evidence state. Input weights for coherence and alpha describe how these covariates modulate the probability of transitioning into the evidence state. Positive weights indicate that higher values of the covariate increase the tendency to enter or remain in the evidence state. The alpha weight has a higher median value than the coherence weight, suggesting that the displayed angle has a stronger association with transitioning into the evidence state than coherence. Red dashed lines indicate group medians. 
 ```
+
+```{figure} modelcomparisonspersubject.png
+:name: figure-main
+:alt: Figure 2. 
+
+While a majority of subjects showed an improvement in model fitting scores, Subjects 1, 6, 7, 9 demonstrated near-zero, negligible shifts, with subject 1 showed a negative improvement score of -7.2.
+
+```{figure} heldoutNLL.png
+:name: figure-main
+:alt: Figure 3. 
+
 
 
 
 ```{figure} figure2.png
 :name: figure-main
-:alt: Figure 2.
+:alt: Figure 4.
 
 The plots show modelled assigned/learned latent-state fluctuations across different runs and subjects, denoted by the orange curve, P(evidence), and how these fluctuations are driven by coherence input sensitivity to transition (the coherence component of $w_{j,k}^\top u_t$ at time $t$).Under the same prior std (i.e., 80 degrees), which reflects significant task difficulty, some subjects, like subject 1, show time-dependent persistence in the evidence mode even though the coherence input has remained low across consecutive trials. In contrast, subject 10 shows more frequent state fluctuations following the input, with transitions to the prior mode immediately upon low coherence, and only stays in the evidence mode when coherence is high. 
 
