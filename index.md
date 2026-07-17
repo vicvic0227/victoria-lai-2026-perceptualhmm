@@ -2,8 +2,7 @@
 title: Time-dependent strategy dynamics in a perceptual decision-making task
 
 abstract: |
-    Human perceptual estimation balances internal expectations with incoming sensory evidence. Although static switching models suggest that observers alternate between prior-dependent and evidence-tracking response modes, it remains unclear whether these switches are trial-independent or governed by dynamic, history-dependent cognitive states. Our input-driven Hidden Markov Model (HMM) provides evidence for time-dependent strategy switching in perceptual estimation, as it outperformed static variants by a large margin, revealing strong temporal inertia in strategy selection. Furthermore, transitions were actively modulated by trial-by-trial sensory coherence and spatial surprise, providing evidence for a boundedly rational brain that dynamically regulates state-dependent processing precision.
-
+    Human perceptual estimation balances internal expectations with incoming sensory evidence. Although static switching models suggest that observers alternate between prior-dependent and evidence-tracking response modes, it remains unclear whether these switches are trial-independent or governed by dynamic, history-dependent cognitive states. The input-driven Hidden Markov Model (HMM) achieved lower held-out predictive negative log-likelihood than the static models on averabe, reveals that participants' strategy use contains temporally structured dependencies. Furthermore, fitted transitions parameters further indicated that state transition probabilites varied by trial-by-trial motion coherence and the angular distance between stimulus and the prior mean, although these covariate effects vary across subjects.
 acknowledgments: |
     This work was supported by the Impact Scholars Program. We acknowledge the contributions of team members Shiva Kamkar, Shima Javadi, Mohammad Basiri.
 ---
@@ -39,18 +38,18 @@ On any single trial, the overall probability density of observing response $y_t$
 $$p(y_t) = w_e \cdot p_{\text{evidence}}(y_t) + (1 - w_e) \cdot p_{\text{prior}}(y_t)$$
 
 
-Model comparison favoured the PM model over the WM model, with $\Delta$AIC = 21,417.9 and $\Delta$BIC = 21,306.0. This indicates that participants' responses were better described by discrete probabilistic switching than by continuous weighted averaging.
+In full-data fits, PM had lower AIC and BIC than WM by 21,417.9 and 21,306.0 ponts, respectively. More importantly, blocked leave-one-run-out cross-validation showed that PM reduced held-out NLL relative to WM by a mean of 0.1028 per trial, $t$(11)=4.57, p=0.0008. This indicates that participants' responses were better described by discrete probabilistic switching than by continuous weighted averaging.
 
 ## Input-driven Hidden Markov Model
 Despite that PM model allows responses to switch between prior-centred and evidence-centred components, it treats each trial as independent. In other words, the probability of relying on evidence on trial $t$ is not directly influenced by the participant's latent state on trial $t-1$. A Hidden Markov model enables the capture of internal mental states, such as mind-wandering, by inferring a posterior probability over latent states for each trial {cite:p}`AshwoodMiceAlternateDiscrete2022`. In our model, the two hidden states correspond to prior and evidence modes, which correspond to distinct decision-making strategies, were parametrised by a set of GLM weights that describe how subjects weigh different task covariates to make a decision in each state. The model was fitted using the Expectation Maximization (EM) algorithm with a maximum of 50 iterations and 5 random initializations. The solution with highest converged log-likelihood was retained.
  
 ### Latent State Transitions
-The transition is modelled using multinomial logistic regression. The discrete hidden states at time t are denoted as  $z_t$, which represents the discrete latent state at trial t, where $z_t$ = 0  corresponds to the Prior state and $z_t$  = 1 represents the Evidence state (@figure-param).
+The transition is modelled using multinomial logistic regression. The discrete hidden states at time t are denoted as  $z_t$, which represents the discrete latent state at trial t, where $z_t$ = 0  corresponds to the Prior state and $z_t$  = 1 represents the Evidence state.
 
 
-Given previous state $j$ the probability of transitioning to state $k$ depends on the trial-wise input vector $u_t$, and $u_t= [\theta_{\text{stim}}, \text{coherence}]^\top$ which includes the current displayed angle and three levels of motion coherence. Prior standard deviation was not included as a transition input because it was not directly visible to participants on a trial-by-trial basis. The probability of jumping from the current state $j$ to the next state $k$ is a softmax over all possible next states. Here, $\log P_{j,k}$ represents the baseline, unnormalized transition bias independent of external task inputs. The vector $w_{j,k}$ represents the transition weights (input coefficients) corresponding to target state $k$ when originating from state $j$. These weights determine how strongly motion coherence and stimulus orientation modulate and shift behavioral strategies.
+Given previous state $j$ the probability of transitioning to state $k$ depends on the trial-wise input vector $u_t$, and $u_t= [\theta_{\text{stim}}, \text{coherence}]^\top$ which includes the current displayed angle and three levels of motion coherence. Prior standard deviation was not included as a transition input because it was not directly visible to participants on a trial-by-trial basis. The probability of jumping from the current state $j$ to the next state $k$ is a softmax over all possible next states. Here, $V_{j,k}$ represents the baseline, unnormalized transition bias independent of external task inputs. The vector $W_{k'}$ represents the transition weights that depends on the destination state $k$ . These weights determine how strongly motion coherence and stimulus orientation modulate and shift behavioral strategies.
 
-$$ \operatorname{Pr}(z_t = k \mid z_{t-1} = j, u_t) = \frac{\exp\left\{ \log P_{j,k} + w_{j,k}^\top u_t \right\}}{\sum_{k'=1}^K \exp\left\{ \log P_{j,k'} + w_{j,k'}^\top u_t \right\}} $$
+$$ \operatorname{Pr}(z_t = k \mid z_{t-1} = j, u_t) = \frac{\exp(V_{jk} + W_{k}^{\top} u_{t})}{\sum_{k'} \exp(V_{jk'} + W_{k'}^{\top} u_{t})} $$
 
 ### Emission Likelihoods
 
@@ -67,14 +66,14 @@ $$p(y_t \mid z_t = 1) = \text{von Mises}(y_t \mid \alpha, \kappa_{\text{ev}}) = 
 
 State 0 (Prior state) captures responses clustered around the prior mean, whereas State 1(Evidence state) captures responses clustered around the displayed stimulus direction.
 
-Leave-one-block-out cross validated predictive negative log likelihood of the first four blocks (each block contains around 200 trials) was compared across the three models. Input-driven HMM outperformed the two static models, with mean difference of 0.0677 (HMM over PM), $p$< 0.001. This result suggests that strategy switching is not only discrete, as captured by the PM model, but also temporally structured(@modelcomparison1). Subject level examples further illustrate this temporal structure. Our study extends the switching observer phenomenon by providing a temporal account for individual differences in strategy switching (@figure-main). We compared subjects who showed an improved HMM model fitting scores, with highest and lowest error among the first 4 blocks. Importantly, both subjects may look switch-like, but subject 10 has more persistent pattern with higher task error than subject 3, which hints at a non-optimal evidence use.
+Leave-one-block-out cross validated predictive negative log likelihood of the first four blocks (each block contains around 200 trials) was compared across the three models. The HMM had lower held-out NLL than PM on average and for 10 of 12 participants (Mean difference per trial = 0.0677 , $t$(11)=3.672, $p$< 0.001), although the size and direction of the difference varied across individuals. Self-transition probabilities were generally high, indicating persistent latent-state assignments, although the degree of persistence varied substantially across participants (@figure-param). This result suggests that strategy switching is not only discrete, as captured by the PM model, but also temporally structured (@modelcomparison1). Subject level examples further illustrate this temporal structure. Our study extends the switching observer phenomenon by providing a temporal account for individual differences in strategy switching (@figure-main). We compared subjects who showed an improved HMM model fitting scores, with highest and lowest error among the first 4 blocks. Importantly, both subjects may look switch-like, but subject 10 has more persistent pattern with higher task error than subject 3, which hints at a non-optimal evidence use.
 
-In conclusion, this study demonstrated that human observers may not lie on a one-dimensional Bayesian-vs-switching axis. Some subjects show more adaptive patterns of arbitration between the two states along with the increase of motion coherence, whereas others show blockwise strategy states. Although we found a trend that overall evidence state occupancy tend to increase with prior standard deviation, it does not necessarily increase with motion coherence. Strategy stability is not significantly correlated with accuracy, thus future studies could explore more on the relationship of states transitions with subjects' behavior and disentangle the psychological meaning behind a 'evidence state': whether it involves a strategic exploration or merely task engagement.
-
-
+In conclusion, this study demonstrated that human observers may not lie on a one-dimensional Bayesian-vs-switching axis. Some subjects show more adaptive patterns of arbitration between the two states along with the increase of motion coherence, whereas others show blockwise strategy states. Evidence-state persistence was not significantly correlated with mean absolute error across subjects, $r$=0.36, $p$=0.25, $n$=12. Future studies could explore more on the relationship of states transitions with subjects' behavior and disentangle the psychological meaning behind a 'evidence state': whether it involves a strategic exploration or merely task engagement.
 
 
-```{figure} hmmparameterv2.png
+
+
+```{figure} hmmparameterv3.png
 :name: figure-param
 :alt: Figure 1.
 
@@ -83,16 +82,14 @@ Group-level parameter distributions from the input-driven HMM model across subje
 
 ```{figure} modelcomparisonpersubject.png
 :name: modelcomparison1
-:alt: Figure 2a. While a majority of subjects showed an improvement in model fitting scores, Subjects 1, 6, 7, 9 demonstrated near-zero, negligible shifts, with subject 1 showed a negative improvement score of -7.2.
-
+:alt: 
+While a majority of subjects showed an improvement in model fitting scores, Subjects 1, 6, 7, 9 demonstrated near-zero, negligible shifts, with subject 1 showed a negative improvement score of -7.2.
+```
 
 ```{figure} blockheldoutNLL.png
 :name: modelcomparison2
-:alt: Figure 2b. 
-Figure 2b. Block held out predictive negative log likelihood. Paired t-test results are shown. *p* < 0.001 \*\*\*, *p* < 0.01 \*\*, *p* < 0.05 \*
-
-
-
+:alt: 
+Block held out predictive negative log likelihood. Paired t-test results are shown. *p* < 0.001 \*\*\*, *p* < 0.01 \*\*, *p* < 0.05 \*
 ```
 
 
@@ -101,7 +98,7 @@ Figure 2b. Block held out predictive negative log likelihood. Paired t-test resu
 :name: figure-main
 :alt: Figure 3.
 
-The plots show modelled input HMM latent-state probabilities across the first four blocks, denoted by the orange curve, P(evidence). Higher prior standard deviation reflects more higher task difficulty.
+The plots show modelled input HMM latent-state probabilities of Subject 3 and 10, who had the lowest and the highest task error across the first four blocks. The orange curve indicates the probability of staying at the evidence state P(evidence). Higher prior standard deviation reflects more higher task difficulty.
 
 
 
